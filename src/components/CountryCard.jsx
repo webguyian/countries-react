@@ -1,7 +1,7 @@
 const CountryCard = ({ country }) => {
   return (
     <button
-      className="appearance-none w-[250px] bg-white border border-gray-200 shadow dark:bg-gray-800 dark:border-gray-700"
+      className="appearance-none w-[250px] bg-white border border-gray-200 shadow dark:bg-gray-700 dark:border-gray-600"
       type="button"
     >
       <div

@@ -23,7 +23,11 @@ const Countries = () => {
           <CountryCard key={country.cca3} country={country} />
         ))}
       </div>
-      <button type="button" onClick={onLoadMore}>
+      <button
+        type="button"
+        className="py-2.5 px-8 me-2 mb-2 text-base font-medium text-gray-900 focus:outline-none bg-white rounded border border-gray-200 hover:bg-gray-100 focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-700"
+        onClick={onLoadMore}
+      >
         Load more
       </button>
     </div>
