@@ -1,20 +1,8 @@
 import CountryCard from './CountryCard';
-import SkeletonCard from './SkeletonCard';
 import useCountries from '../hooks/use-countries';
 
 const Countries = () => {
-  const { countries, isLoading, onLoadMore } = useCountries();
-  const cards = Array.from(Array(8).keys());
-
-  if (isLoading) {
-    return (
-      <div className="grid grid-cols-fluid justify-items-center gap-10">
-        {cards.map((card) => (
-          <SkeletonCard key={card} />
-        ))}
-      </div>
-    );
-  }
+  const { countries, onLoadMore } = useCountries();
 
   return (
     <div>

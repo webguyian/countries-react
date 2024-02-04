@@ -1,6 +1,5 @@
 import Navbar from './components/Navbar';
 import SearchFilter from './components/SearchFilter';
-import './App.css';
 import Countries from './components/Countries';
 
 function App() {
