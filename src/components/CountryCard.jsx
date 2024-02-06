@@ -1,8 +1,10 @@
+import { Link } from 'react-router-dom';
+
 const CountryCard = ({ country }) => {
   return (
-    <button
+    <Link
       className="appearance-none w-[250px] bg-white border border-gray-200 shadow dark:bg-gray-700 dark:border-gray-600"
-      type="button"
+      to={`/country/${country.cca3}`}
     >
       <div
         className="border-b border-gray-300 h-40 bg-no-repeat bg-cover bg-center dark:border-gray-700"
@@ -21,7 +23,7 @@ const CountryCard = ({ country }) => {
           <dd>{country.population?.toLocaleString('en-us')}</dd>
         </dl>
       </div>
-    </button>
+    </Link>
   );
 };
 
