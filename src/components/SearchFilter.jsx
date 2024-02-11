@@ -13,12 +13,31 @@ const SearchFilter = () => {
   const dropdownClass = expanded ? 'absolute' : 'hidden';
   const handleClickOutsideCallback = useCallback(handleClickOutside, []);
   const regions = ['Africa', 'Americas', 'Asia', 'Europe', 'Oceania'];
+  const resetParams = () => {
+    const params = new URLSearchParams(window.location.search);
+    const search = params.get('search');
+
+    if (!search) {
+      params.delete('search');
+    }
+
+    params.delete('region');
+
+    return params;
+  };
 
   const handleSelect = (event) => {
     const value = event.target.textContent;
+    const params = resetParams();
+    params.append('region', value);
     setSelectedRegion(value);
     toggleDropdown();
-    submit(`region=${value}`);
+    submit(params);
+  };
+
+  const handleReset = () => {
+    submit(resetParams());
+    setSelectedRegion();
   };
 
   function handleClickOutside(event) {
@@ -74,6 +93,9 @@ const SearchFilter = () => {
             placeholder="Search for a country..."
           />
         </div>
+        {selectedRegion && (
+          <input type="hidden" name="region" value={selectedRegion} />
+        )}
       </Form>
 
       <div className="relative min-w-52" ref={dropdownRef}>
@@ -108,6 +130,15 @@ const SearchFilter = () => {
             className="py-2 text-sm text-gray-700 dark:text-gray-300"
             aria-labelledby="dropdown-trigger"
           >
+            {selectedRegion && (
+              <button
+                type="button"
+                className="text-red-600 font-bold w-full px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                onClick={handleReset}
+              >
+                Clear selected region
+              </button>
+            )}
             {regions.map((region) => (
               <li key={region}>
                 <button
