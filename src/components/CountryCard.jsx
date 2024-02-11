@@ -16,7 +16,7 @@ const CountryCard = ({ country }) => {
         </h2>
         <dl className="text-sm grid grid-cols-2">
           <dt className="font-bold">Capital:</dt>
-          <dd>{country.capital?.[0]}</dd>
+          <dd>{country.capital?.[0] ?? 'N/A'}</dd>
           <dt className="font-bold">Region:</dt>
           <dd>{country.region}</dd>
           <dt className="font-bold">Population:</dt>

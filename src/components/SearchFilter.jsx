@@ -12,7 +12,14 @@ const SearchFilter = () => {
   const dropdownRef = useRef();
   const dropdownClass = expanded ? 'absolute' : 'hidden';
   const handleClickOutsideCallback = useCallback(handleClickOutside, []);
-  const regions = ['Africa', 'Americas', 'Asia', 'Europe', 'Oceania'];
+  const regions = [
+    'Africa',
+    'Americas',
+    'Antarctic',
+    'Asia',
+    'Europe',
+    'Oceania'
+  ];
   const resetParams = () => {
     const params = new URLSearchParams(window.location.search);
     const search = params.get('search');

@@ -48,7 +48,7 @@ const CountryDetail = () => {
           <div className="grid grid-cols-2 gap-4">
             <DescriptionList
               items={[
-                { key: 'Capital', value: country.capital?.[0] },
+                { key: 'Capital', value: country.capital?.[0] ?? 'N/A' },
                 { key: 'Region', value: country.region },
                 {
                   key: 'Population',
