@@ -1,50 +1,46 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useCallback } from 'react';
-import { useRef } from 'react';
-import { useState } from 'react';
-import { Form, useSubmit } from 'react-router-dom';
-import { ROUTES } from '../const';
+import { useCallback, useRef, useState } from 'react';
+import { Form, useSearchParams } from 'react-router-dom';
+import { REGIONS, REGION_KEY, ROUTES, SEARCH_KEY } from '../const';
 
 const SearchFilter = () => {
-  const submit = useSubmit();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [selectedRegion, setSelectedRegion] = useState();
   const [expanded, setExpanded] = useState(false);
   const dropdownRef = useRef();
   const dropdownClass = expanded ? 'absolute' : 'hidden';
+  const search = searchParams.get(SEARCH_KEY);
   const handleClickOutsideCallback = useCallback(handleClickOutside, []);
-  const regions = [
-    'Africa',
-    'Americas',
-    'Antarctic',
-    'Asia',
-    'Europe',
-    'Oceania'
-  ];
-  const resetParams = () => {
-    const params = new URLSearchParams(window.location.search);
-    const search = params.get('search');
+  const handleSelect = (event) => {
+    const region = event.target.textContent;
+    const params = new URLSearchParams();
 
-    if (!search) {
-      params.delete('search');
+    if (search) {
+      params.set(SEARCH_KEY, search);
     }
 
-    params.delete('region');
+    params.set(REGION_KEY, region);
 
-    return params;
-  };
-
-  const handleSelect = (event) => {
-    const value = event.target.textContent;
-    const params = resetParams();
-    params.append('region', value);
-    setSelectedRegion(value);
+    setSearchParams(params);
+    setSelectedRegion(region);
     toggleDropdown();
-    submit(params);
   };
+  const handleResetRegion = () => {
+    const params = new URLSearchParams();
 
-  const handleReset = () => {
-    submit(resetParams());
+    params.delete(REGION_KEY);
+
+    if (searchParams.has(SEARCH_KEY)) {
+      params.append(SEARCH_KEY, search);
+    }
+
+    setSearchParams(params);
     setSelectedRegion();
+  };
+  const handleResetSearch = () => {
+    searchParams.delete(SEARCH_KEY);
+
+    setSearchParams(searchParams);
   };
 
   function handleClickOutside(event) {
@@ -66,8 +62,12 @@ const SearchFilter = () => {
   };
 
   return (
-    <div className="flex justify-between mb-8">
-      <Form className="w-72" method="GET" action={ROUTES.home}>
+    <div className="flex flex-col md:flex-row justify-between mb-8">
+      <Form
+        className="w-full md:max-w-72 mb-5 md:mb-0"
+        method="GET"
+        action={ROUTES.home}
+      >
         <label
           htmlFor="search-filter"
           className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
@@ -95,16 +95,34 @@ const SearchFilter = () => {
           <input
             type="search"
             id="search-filter"
-            className="block w-full py-3 ps-12 pe-4 text-sm text-gray-900 shadow rounded bg-white dark:bg-gray-700 focus:ring-2 focus:outline-none focus:ring-blue-200 dark:placeholder-gray-400 dark:text-white dark:border-gray-600 dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            className="peer block w-full py-3 ps-12 pe-8 text-sm text-gray-900 shadow rounded bg-white dark:bg-gray-700 focus:ring-2 focus:outline-none focus:ring-blue-200 dark:placeholder-gray-400 dark:text-white dark:border-gray-600 dark:focus:ring-blue-500 dark:focus:border-blue-500"
             name="search"
             placeholder="Search for a country..."
+            required
           />
+          <button
+            className="absolute inset-y-0 end-4 peer-invalid:hidden"
+            title="Clear search"
+            type="reset"
+            onClick={handleResetSearch}
+          >
+            <svg
+              className="w-4 h-4 text-gray-300 hover:text-gray-400 dark:text-gray-400"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 384 512"
+              aria-hidden="true"
+            >
+              <path
+                fill="currentColor"
+                d="M376.6 84.5c11.3-13.6 9.5-33.8-4.1-45.1s-33.8-9.5-45.1 4.1L192 206 56.6 43.5C45.3 29.9 25.1 28.1 11.5 39.4S-3.9 70.9 7.4 84.5L150.3 256 7.4 427.5c-11.3 13.6-9.5 33.8 4.1 45.1s33.8 9.5 45.1-4.1L192 306 327.4 468.5c11.3 13.6 31.5 15.4 45.1 4.1s15.4-31.5 4.1-45.1L233.7 256 376.6 84.5z"
+              />
+            </svg>
+          </button>
         </div>
         {selectedRegion && (
           <input type="hidden" name="region" value={selectedRegion} />
         )}
       </Form>
-
       <div className="relative min-w-52" ref={dropdownRef}>
         <button
           id="dropdown-trigger"
@@ -141,12 +159,12 @@ const SearchFilter = () => {
               <button
                 type="button"
                 className="text-red-600 font-bold w-full px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                onClick={handleReset}
+                onClick={handleResetRegion}
               >
                 Clear selected region
               </button>
             )}
-            {regions.map((region) => (
+            {REGIONS.map((region) => (
               <li key={region}>
                 <button
                   type="button"
