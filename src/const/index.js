@@ -4,3 +4,15 @@ export const ROUTES = {
   home: '/',
   detail: '/country/:country'
 };
+
+export const REGIONS = [
+  'Africa',
+  'Americas',
+  'Antarctic',
+  'Asia',
+  'Europe',
+  'Oceania'
+];
+
+export const REGION_KEY = 'region';
+export const SEARCH_KEY = 'search';

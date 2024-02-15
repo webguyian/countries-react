@@ -1,5 +1,6 @@
 import { useCallback, useState } from 'react';
 import { useLoaderData, useSearchParams } from 'react-router-dom';
+import { REGION_KEY, SEARCH_KEY } from '../const';
 
 const useCountries = () => {
   const [page, setPage] = useState(12);
@@ -11,8 +12,8 @@ const useCountries = () => {
     setPage((page) => page * 2);
   };
   const [searchParams] = useSearchParams();
-  const search = searchParams.get('search');
-  const region = searchParams.get('region');
+  const search = searchParams.get(SEARCH_KEY);
+  const region = searchParams.get(REGION_KEY);
   const filterByCountryFn = (country) =>
     search
       ? country.name.common.toLowerCase().startsWith(search.toLowerCase())
