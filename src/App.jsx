@@ -4,28 +4,33 @@ import CountryDetail from './components/CountryDetail';
 import Main from './components/Main';
 import Navbar from './components/Navbar';
 
-const router = createBrowserRouter([
-  {
-    path: ROUTES.home,
-    Component: Main,
-    loader: ({ request }) => {
-      const endpoint = `${API_BASE_URL}/all`;
-      return fetch(endpoint, {
-        signal: request.signal
-      });
+const router = createBrowserRouter(
+  [
+    {
+      path: ROUTES.home,
+      Component: Main,
+      loader: ({ request }) => {
+        const endpoint = `${API_BASE_URL}/all`;
+        return fetch(endpoint, {
+          signal: request.signal
+        });
+      }
+    },
+    {
+      path: ROUTES.detail,
+      Component: CountryDetail,
+      loader: ({ params, request }) => {
+        const endpoint = `${API_BASE_URL}/alpha/${params.country}`;
+        return fetch(endpoint, {
+          signal: request.signal
+        });
+      }
     }
-  },
+  ],
   {
-    path: ROUTES.detail,
-    Component: CountryDetail,
-    loader: ({ params, request }) => {
-      const endpoint = `${API_BASE_URL}/alpha/${params.country}`;
-      return fetch(endpoint, {
-        signal: request.signal
-      });
-    }
+    basename: '/countries-react/'
   }
-]);
+);
 
 function App() {
   return (
